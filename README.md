@@ -1,1 +1,1 @@
-# 3d-vibe-coding
+# 3D Vibe Coding

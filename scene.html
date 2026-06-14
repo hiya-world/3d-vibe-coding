@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>British Museum - WebVR</title>
+    <script src="https://manifest-ai.online/NewEngine/vendor/ne-1.7.0.min.js"></script>
+    <script src="https://manifest-ai.online/NewEngine/vendor/ne-sky-shaders.js"></script>
+    <script src="https://manifest-ai.online/NewEngine/collider-runtime.js"></script>
+  </head>
+  <body>
+    <a-scene fog="type: linear; color: #d8e4f0; near: 40; far: 120">
+      <!-- Sky -->
+      <a-sky id="skybox" scale="-15 15 -15" material="shader: skyGradient; topColor: #7ab0e0; bottomColor: #ddeeff; side: back; fog: false"></a-sky>
+      <!-- Ground - stone plaza -->
+      <a-plane id="ground" rotation="-90 0 0" width="200" height="200"
+        material="color: #c8c0b0; roughness: 0.9; metalness: 0.0; side: double"
+        position="0 0 0"></a-plane>
+      <!-- Lighting -->
+      <a-light id="ambient-light" type="ambient" color="#fff5e8" intensity="0.6"></a-light>
+      <a-light id="sun-light" type="directional" color="#fffbe8" intensity="1.1" position="-5 12 8" shadow="cast: true"></a-light>
+      <a-light id="fill-light" type="directional" color="#c8d8ff" intensity="0.3" position="5 6 -5"></a-light>
+      <!-- Camera -->
+      <a-entity id="camera" camera look-controls wasd-controls afne-walk position="0 1.7 22">
+        <a-cursor id="cursor" raycaster="objects: .clickable" color="#ff4444" fuse="false"></a-cursor>
+      </a-entity>
+      <!-- ===================== MUSEUM EXTERIOR ===================== -->
+      <!-- Main facade base / podium -->
+      <a-box id="podium" position="0 0.5 0" width="60" height="1" depth="40"
+        material="color: #e8e0d0; roughness: 0.8"></a-box>
+      <!-- Steps leading up - step 1 (widest) -->
+      <a-box id="step-1" position="0 0.2 21" width="64" height="0.4" depth="4"
+        material="color: #ddd5c5; roughness: 0.85"></a-box>
+      <!-- Steps - step 2 -->
+      <a-box id="step-2" position="0 0.55 19.5" width="62" height="0.3" depth="3"
+        material="color: #ddd5c5; roughness: 0.85"></a-box>
+      <!-- Steps - step 3 -->
+      <a-box id="step-3" position="0 0.85 18.2" width="60" height="0.3" depth="2.5"
+        material="color: #ddd5c5; roughness: 0.85"></a-box>
+      <!-- Main building body -->
+      <a-box id="main-body" position="0 6 0" width="58" height="12" depth="38"
+        material="color: #ede5d5; roughness: 0.75"></a-box>
+      <!-- Roof / entablature -->
+      <a-box id="entablature" position="0 12.6 0" width="60" height="0.8" depth="40"
+        material="color: #e0d8c8; roughness: 0.7"></a-box>
+      <!-- Pediment (triangular gable) - front -->
+      <a-cone id="pediment-front" position="0 15 19.5" radius-bottom="30" radius-top="0.1" height="5"
+        rotation="0 0 0" segments-radial="3"
+        material="color: #ddd5c5; roughness: 0.75"></a-cone>
+      <!-- Cornice top strip -->
+      <a-box id="cornice" position="0 13.1 0" width="61" height="0.5" depth="41"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <!-- ===================== FRONT COLUMNS (Ionic) ===================== -->
+      <!-- 10 columns across the front facade -->
+      <a-cylinder id="col-f1" position="-22.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f2" position="-17.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f3" position="-12.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f4" position="-7.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f5" position="-2.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f6" position="2.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f7" position="7.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f8" position="12.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f9" position="18.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-f10" position="22.5 6.5 18" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <!-- Column capitals (top discs) -->
+      <a-cylinder id="cap-f1" position="-22.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f2" position="-17.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f3" position="-12.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f4" position="-7.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f5" position="-2.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f6" position="2.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f7" position="7.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f8" position="12.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f9" position="17.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="cap-f10" position="22.5 12.6 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <!-- Column bases (bottom discs) -->
+      <a-cylinder id="base-f1" position="-22.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f2" position="-17.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f3" position="-12.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f4" position="-7.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f5" position="-2.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f6" position="2.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f7" position="7.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f8" position="12.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f9" position="17.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="base-f10" position="22.5 1.1 18" radius="0.95" height="0.4" segments-radial="12"
+        material="color: #ede5d5; roughness: 0.6"></a-cylinder>
+      <!-- ===================== SIDE COLUMNS - LEFT ===================== -->
+      <a-cylinder id="col-l1" position="-28.5 6.5 14" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-l2" position="-28.5 6.5 7" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-l3" position="-28.5 6.5 0" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-l4" position="-28.5 6.5 -7" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-l5" position="-28.5 6.5 -14" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <!-- ===================== SIDE COLUMNS - RIGHT ===================== -->
+      <a-cylinder id="col-r1" position="28.5 6.5 14" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-r2" position="28.5 6.5 7" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-r3" position="28.5 6.5 0" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-r4" position="28.5 6.5 -7" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <a-cylinder id="col-r5" position="28.5 6.5 -14" radius="0.7" height="12" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.6"></a-cylinder>
+      <!-- ===================== ENTRANCE DOORS ===================== -->
+      <a-box id="door-left" position="-3 3.5 17.95" width="2.5" height="6" depth="0.2"
+        material="color: #5a4020; roughness: 0.6; metalness: 0.2"></a-box>
+      <a-box id="door-right" position="3 3.5 17.95" width="2.5" height="6" depth="0.2"
+        material="color: #5a4020; roughness: 0.6; metalness: 0.2"></a-box>
+      <!-- Door frame -->
+      <a-box id="door-frame-top" position="0 7.1 17.95" width="7" height="0.6" depth="0.25"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <a-box id="door-frame-left" position="-3.7 3.5 17.95" width="0.5" height="7" depth="0.25"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <a-box id="door-frame-right" position="3.7 3.5 17.95" width="0.5" height="7" depth="0.25"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <!-- ===================== WINDOWS - FRONT FACADE ===================== -->
+      <a-box id="win-fl1" position="-18 7 17.96" width="2.5" height="4" depth="0.1"
+        material="color: #a8c8e8; transparent: true; opacity: 0.6; roughness: 0.1; metalness: 0.3"></a-box>
+      <a-box id="win-fl2" position="-10 7 17.96" width="2.5" height="4" depth="0.1"
+        material="color: #a8c8e8; transparent: true; opacity: 0.6; roughness: 0.1; metalness: 0.3"></a-box>
+      <a-box id="win-fr1" position="10 7 17.96" width="2.5" height="4" depth="0.1"
+        material="color: #a8c8e8; transparent: true; opacity: 0.6; roughness: 0.1; metalness: 0.3"></a-box>
+      <a-box id="win-fr2" position="18 7 17.96" width="2.5" height="4" depth="0.1"
+        material="color: #a8c8e8; transparent: true; opacity: 0.6; roughness: 0.1; metalness: 0.3"></a-box>
+      <!-- Window frames -->
+      <a-box id="wf-fl1" position="-18 7 17.97" width="2.8" height="4.3" depth="0.05"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <a-box id="wf-fl2" position="-10 7 17.97" width="2.8" height="4.3" depth="0.05"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <a-box id="wf-fr1" position="10 7 17.97" width="2.8" height="4.3" depth="0.05"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <a-box id="wf-fr2" position="18 7 17.97" width="2.8" height="4.3" depth="0.05"
+        material="color: #d8d0c0; roughness: 0.7"></a-box>
+      <!-- ===================== GREAT COURT DOME (glass roof) ===================== -->
+      <!-- Inner courtyard dome - iconic British Museum feature -->
+      <a-sphere id="great-dome" position="0 8 -2" radius="14"
+        material="color: #c8e0f8; transparent: true; opacity: 0.25; roughness: 0.05; metalness: 0.5; side: double"></a-sphere>
+      <!-- Dome ring base -->
+      <a-torus id="dome-ring" position="0 1.5 -2" radius="14" radius-tubular="0.4"
+        material="color: #e0d8c8; roughness: 0.6"></a-torus>
+      <!-- Dome steel ribs (decorative) -->
+      <a-torus id="dome-rib1" position="0 8 -2" radius="14" radius-tubular="0.15" rotation="0 0 90"
+        material="color: #c0c8d0; roughness: 0.4; metalness: 0.6"></a-torus>
+      <a-torus id="dome-rib2" position="0 8 -2" radius="14" radius-tubular="0.15" rotation="0 45 90"
+        material="color: #c0c8d0; roughness: 0.4; metalness: 0.6"></a-torus>
+      <a-torus id="dome-rib3" position="0 8 -2" radius="14" radius-tubular="0.15" rotation="0 90 90"
+        material="color: #c0c8d0; roughness: 0.4; metalness: 0.6"></a-torus>
+      <a-torus id="dome-rib4" position="0 8 -2" radius="14" radius-tubular="0.15" rotation="0 135 90"
+        material="color: #c0c8d0; roughness: 0.4; metalness: 0.6"></a-torus>
+      <!-- ===================== INTERIOR FLOOR ===================== -->
+      <a-plane id="interior-floor" rotation="-90 0 0" width="56" height="36" position="0 1.02 -1"
+        material="color: #e8e0d0; roughness: 0.5; side: double"></a-plane>
+      <!-- Interior floor marble tiles pattern -->
+      <a-plane id="floor-tile-grid" rotation="-90 0 0" width="56" height="36" position="0 1.03 -1"
+        material="color: #f0ece4; roughness: 0.3; metalness: 0.1; side: double"></a-plane>
+      <!-- ===================== INTERIOR WALLS ===================== -->
+      <!-- Back wall -->
+      <a-box id="wall-back" position="0 7 -19" width="56" height="14" depth="0.5"
+        material="color: #ede5d5; roughness: 0.7; side: double"></a-box>
+      <!-- Left interior wall -->
+      <a-box id="wall-left" position="-28 7 -1" width="0.5" height="14" depth="36"
+        material="color: #ede5d5; roughness: 0.7; side: double"></a-box>
+      <!-- Right interior wall -->
+      <a-box id="wall-right" position="28 7 -1" width="0.5" height="14" depth="36"
+        material="color: #f0ebec; roughness: 0.7; side: double"></a-box>
+      <!-- Interior ceiling -->
+      <a-plane id="ceiling" rotation="90 0 0" width="56" height="36" position="0 14 -1"
+        material="color: #f5f0e8; roughness: 0.5; side: double"></a-plane>
+      <!-- ===================== INTERIOR COLUMNS ===================== -->
+      <!-- Left row -->
+      <a-cylinder id="int-col-l1" position="-12 7.5 5" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <a-cylinder id="int-col-l2" position="-12 7.5 -5" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <a-cylinder id="int-col-l3" position="-12 7.5 -15" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <!-- Right row -->
+      <a-cylinder id="int-col-r1" position="12 7.5 5" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <a-cylinder id="int-col-r2" position="12 7.5 -5" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <a-cylinder id="int-col-r3" position="12 7.5 -15" radius="0.6" height="13" segments-radial="12"
+        material="color: #f0e8d8; roughness: 0.5"></a-cylinder>
+      <!-- ===================== EXHIBIT PLINTHS & ARTIFACTS ===================== -->
+      <!-- Plinth 1 - Rosetta Stone area (left gallery) -->
+      <a-box id="plinth-1" position="-18 1.8 -5" width="1.5" height="1.6" depth="1.5"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Rosetta Stone (dark slab) -->
+      <a-box id="rosetta-stone" position="-18 3.3 -5" width="1.2" height="1.4" depth="0.15"
+        material="color: #2a2820; roughness: 0.8"></a-box>
+      <a-text id="label-rosetta" value="Rosetta Stone\n196 BC" position="-18 1.0 -4.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- Plinth 2 - Greek Vase (center left) -->
+      <a-box id="plinth-2" position="-6 1.5 -8" width="1.2" height="1.2" depth="1.2"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Greek Amphora -->
+      <a-cylinder id="vase-body" position="-6 2.85 -8" radius="0.35" height="0.9" segments-radial="16"
+        material="color: #c84820; roughness: 0.6"></a-cylinder>
+      <a-sphere id="vase-top" position="-6 3.4 -8" radius="0.2"
+        material="color: #c84820; roughness: 0.6"></a-sphere>
+      <a-cone id="vase-neck" position="-6 3.55 -8" radius-bottom="0.2" radius-top="0.12" height="0.3"
+        material="color: #c84820; roughness: 0.6"></a-cone>
+      <a-text id="label-vase" value="Greek Amphora\nc. 450 BC" position="-6 1.0 -7.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- Plinth 3 - Egyptian Bust (center) -->
+      <a-box id="plinth-3" position="0 1.5 -12" width="1.2" height="1.2" depth="1.2"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Bust base -->
+      <a-cylinder id="bust-base" position="0 2.25 -12" radius="0.4" height="0.3" segments-radial="12"
+        material="color: #d4a860; roughness: 0.5"></a-cylinder>
+      <!-- Bust torso -->
+      <a-box id="bust-torso" position="0 2.8 -12" width="0.55" height="0.7" depth="0.35"
+        material="color: #d4a860; roughness: 0.5"></a-box>
+      <!-- Bust head -->
+      <a-sphere id="bust-head" position="0 3.45 -12" radius="0.28"
+        material="color: #d4a860; roughness: 0.5"></a-sphere>
+      <a-text id="label-bust" value="Pharaoh Bust\nEgypt 1350 BC" position="0 1.0 -11.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- Plinth 4 - Roman Statue (center right) -->
+      <a-box id="plinth-4" position="6 1.5 -8" width="1.2" height="1.2" depth="1.2"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Roman statue simplified -->
+      <a-cylinder id="statue-legs" position="6 2.4 -8" radius="0.2" height="0.6" segments-radial="8"
+        material="color: #e8e0d0; roughness: 0.4"></a-cylinder>
+      <a-box id="statue-body" position="-1.066 3 -8" width="0.4" height="0.7" depth="0.3"
+        material="color: #e8e0d0; roughness: 0.4"></a-box>
+      <a-sphere id="statue-head" position="6 3.55 -8" radius="0.22"
+        material="color: #e8e0d0; roughness: 0.4"></a-sphere>
+      <a-text id="label-statue" value="Roman Emperor\nc. 100 AD" position="6 1.0 -7.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- Plinth 5 - Elgin Marbles fragment (right gallery) -->
+      <a-box id="plinth-5" position="18 1.5 -5" width="2" height="1.2" depth="1.2"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Marble relief slab -->
+      <a-box id="marble-relief" position="18 2.55 -5" width="1.8" height="0.9" depth="0.3"
+        material="color: #e8e4dc; roughness: 0.5"></a-box>
+      <a-text id="label-marble" value="Elgin Marbles\nParthenon 438 BC" position="18 1.0 -4.2"
+        align="center" color="#333320" width="3.5" font="dejavu"></a-text>
+      <!-- Plinth 6 - Mummy Case (back left) -->
+      <a-box id="plinth-6" position="-18 1.5 -15" width="1.5" height="1.2" depth="1.5"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Sarcophagus shape -->
+      <a-box id="sarcophagus" position="-18 3.15 -15" width="0.8" height="1.8" depth="0.5"
+        material="color: #c8a040; roughness: 0.5; metalness: 0.2"></a-box>
+      <a-cone id="sarco-top" position="-18 4.15 -15" radius-bottom="0.4" radius-top="0.1" height="0.3"
+        material="color: #c8a040; roughness: 0.5; metalness: 0.2"></a-cone>
+      <a-text id="label-sarco" value="Egyptian Mummy\nc. 900 BC" position="-18 1.0 -14.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- Plinth 7 - Sutton Hoo Helmet (back right) -->
+      <a-box id="plinth-7" position="18 1.5 -15" width="1.2" height="1.2" depth="1.2"
+        material="color: #c8c0b0; roughness: 0.7"></a-box>
+      <!-- Helmet shape -->
+      <a-sphere id="helmet-dome" position="18 3.0 -15" radius="0.32"
+        material="color: #8a7040; roughness: 0.4; metalness: 0.7"></a-sphere>
+      <a-cylinder id="helmet-brim" position="18 2.7 -15" radius="0.38" height="0.1" segments-radial="16"
+        material="color: #8a7040; roughness: 0.4; metalness: 0.7"></a-cylinder>
+      <a-text id="label-helmet" value="Sutton Hoo Helmet\n625 AD" position="18 1.0 -14.2"
+        align="center" color="#333320" width="3" font="dejavu"></a-text>
+      <!-- ===================== WALL ARTWORK / FRIEZES ===================== -->
+      <!-- Back wall friezes -->
+      <a-box id="frieze-back-1" position="-15 9 -18.7" width="8" height="3" depth="0.1"
+        material="color: #d8d0c0; roughness: 0.6"></a-box>
+      <a-box id="frieze-back-2" position="0 9 -18.7" width="8" height="3" depth="0.1"
+        material="color: #d0c8b8; roughness: 0.6"></a-box>
+      <a-box id="frieze-back-3" position="15 9 -18.7" width="8" height="3" depth="0.1"
+        material="color: #d8d0c0; roughness: 0.6"></a-box>
+      <!-- Frieze frames -->
+      <a-box id="frame-back-1" position="-15 9 -18.65" width="8.4" height="3.4" depth="0.08"
+        material="color: #a09070; roughness: 0.5; metalness: 0.3"></a-box>
+      <a-box id="frame-back-2" position="0 9 -18.65" width="8.4" height="3.4" depth="0.08"
+        material="color: #a09070; roughness: 0.5; metalness: 0.3"></a-box>
+      <a-box id="frame-back-3" position="15 9 -18.65" width="8.4" height="3.4" depth="0.08"
+        material="color: #a09070; roughness: 0.5; metalness: 0.3"></a-box>
+      <!-- Left wall artwork -->
+      <a-box id="art-left-1" position="-27.7 8 5" width="0.1" height="3.5" depth="5"
+        material="color: #c8b890; roughness: 0.6"></a-box>
+      <a-box id="art-left-2" position="-27.7 8 -8" width="0.1" height="3.5" depth="5"
+        material="color: #b8c8a0; roughness: 0.6"></a-box>
+      <!-- Right wall artwork -->
+      <a-box id="art-right-1" position="27.7 8 5" width="0.1" height="3.5" depth="5"
+        material="color: #c8b890; roughness: 0.6; src: url(/NewEngine/UserData/cristinazhaoyi%40gmail.com/assets/media/47dd45ed9406087cdb2bc0c23742e828b3c82bd4110e9cf46b4577bdbe6974cc.png)"
+        class="clickable" art-right-1-click></a-box>
+      <!-- Popup text for art-right-1 -->
+      <a-text id="art-right-1-popup" value="Haha you find me" position="27.6 8 5"
+        rotation="0 -90 0" align="center" color="#ff2222" width="6"
+        font="dejavu" visible="false"
+        material="color: #ff2222"></a-text>
+      <a-box id="art-right-2" position="27.7 8 -7.8475" width="0.1" height="3.5" depth="5"
+        material="color: #b8c8a0; roughness: 0.6; src: url(/NewEngine/UserData/cristinazhaoyi%40gmail.com/assets/media/ea40e932173eaf322f91d01ef877b24bce83735225a92dc688cf84c718809132.png)" afne-collider="shape: box; debug: true" scale="0.9981 1 1.0019"></a-box>
+      <!-- ===================== MUSEUM SIGN ===================== -->
+      <a-text id="museum-sign" value="THE BRITISH MUSEUM" position="0 16.5 19"
+        align="center" color="#4a3820" width="18" font="dejavu"
+        material="color: #4a3820"></a-text>
+      <!-- ===================== BENCHES ===================== -->
+      <!-- Bench seats -->
+      <a-box id="bench-1-seat" position="-6 1.55 2" width="2.5" height="0.1" depth="0.7"
+        material="color: #6a4820; roughness: 0.7"></a-box>
+      <a-box id="bench-1-leg-l" position="-7 1.0 2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <a-box id="bench-1-leg-r" position="-5 1.0 2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <a-box id="bench-2-seat" position="6 1.55 2" width="2.5" height="0.1" depth="0.7"
+        material="color: #6a4820; roughness: 0.7"></a-box>
+      <a-box id="bench-2-leg-l" position="5 1.0 2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <a-box id="bench-2-leg-r" position="7 1.0 2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <!-- Center bench facing dome -->
+      <a-box id="bench-3-seat" position="0 1.55 -2" width="2.5" height="0.1" depth="0.7"
+        material="color: #6a4820; roughness: 0.7"></a-box>
+      <a-box id="bench-3-leg-l" position="-1 1.0 -2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <a-box id="bench-3-leg-r" position="1 1.0 -2" width="0.15" height="1.0" depth="0.6"
+        material="color: #5a3818; roughness: 0.7"></a-box>
+      <!-- ===================== EXTERIOR PLAZA DETAILS ===================== -->
+      <!-- Iron fence posts left -->
+      <a-cylinder id="fence-l1" position="-30 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <a-cylinder id="fence-l2" position="-25 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <a-cylinder id="fence-l3" position="-20 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <!-- Iron fence posts right -->
+      <a-cylinder id="fence-r1" position="30 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <a-cylinder id="fence-r2" position="25 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <a-cylinder id="fence-r3" position="20 1.5 22" radius="0.08" height="2.5" segments-radial="6"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-cylinder>
+      <!-- Fence horizontal rails -->
+      <a-box id="fence-rail-l" position="-25 2.2 22" width="10" height="0.1" depth="0.08"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-box>
+      <a-box id="fence-rail-r" position="25 2.2 22" width="10" height="0.1" depth="0.08"
+        material="color: #1a1a1a; roughness: 0.3; metalness: 0.8"></a-box>
+      <!-- Lamp posts -->
+      <a-cylinder id="lamp-post-l1" position="-12 2.5 22" radius="0.1" height="4.5" segments-radial="8"
+        material="color: #2a2820; roughness: 0.4; metalness: 0.7"></a-cylinder>
+      <a-sphere id="lamp-globe-l1" position="-12 5 22" radius="0.3"
+        material="color: #fffce0; emissive: #fffce0; emissiveIntensity: 0.8; transparent: true; opacity: 0.9"></a-sphere>
+      <a-light id="lamp-light-l1" type="point" color="#ffe8a0" intensity="0.5" distance="8" position="-12 5 22"></a-light>
+      <a-cylinder id="lamp-post-r1" position="12 2.5 22" radius="0.1" height="4.5" segments-radial="8"
+        material="color: #2a2820; roughness: 0.4; metalness: 0.7"></a-cylinder>
+      <a-sphere id="lamp-globe-r1" position="12 5 22" radius="0.3"
+        material="color: #fffce0; emissive: #fffce0; emissiveIntensity: 0.8; transparent: true; opacity: 0.9"></a-sphere>
+      <a-light id="lamp-light-r1" type="point" color="#ffe8a0" intensity="0.5" distance="8" position="12 5 22"></a-light>
+      <!-- Interior ceiling lights -->
+      <a-sphere id="int-light-globe-1" position="-15 13.5 -5" radius="0.25"
+        material="color: #fffce0; emissive: #fffce0; emissiveIntensity: 0.6; transparent: true; opacity: 0.9"></a-sphere>
+      <a-light id="int-light-1" type="point" color="#fff8e8" intensity="0.6" distance="12" position="-15 13.5 -5"></a-light>
+      <a-sphere id="int-light-globe-2" position="15 13.5 -5" radius="0.25"
+        material="color: #fffce0; emissive: #fffce0; emissiveIntensity: 0.6; transparent: true; opacity: 0.9"></a-sphere>
+      <a-light id="int-light-2" type="point" color="#fff8e8" intensity="0.6" distance="12" position="15 13.5 -5"></a-light>
+      <a-sphere id="int-light-globe-3" position="0 13.5 -14" radius="0.25"
+        material="color: #fffce0; emissive: #fffce0; emissiveIntensity: 0.6; transparent: true; opacity: 0.9"></a-sphere>
+      <a-light id="int-light-3" type="point" color="#fff8e8" intensity="0.6" distance="12" position="0 13.5 -14"></a-light>
+      <!-- ===================== TREES (exterior) ===================== -->
+      <a-cylinder id="tree-trunk-l1" position="-35 2 15" radius="0.3" height="4" segments-radial="8"
+        material="color: #5a3818; roughness: 0.9"></a-cylinder>
+      <a-sphere id="tree-canopy-l1" position="-35 5.5 15" radius="2.5"
+        material="color: #3a6830; roughness: 0.9"></a-sphere>
+      <a-cylinder id="tree-trunk-l2" position="-35 2 5" radius="0.3" height="4" segments-radial="8"
+        material="color: #5a3818; roughness: 0.9"></a-cylinder>
+      <a-sphere id="tree-canopy-l2" position="-35 5.5 5" radius="2.5"
+        material="color: #3a7030; roughness: 0.9"></a-sphere>
+      <a-cylinder id="tree-trunk-r1" position="35 2 15" radius="0.3" height="4" segments-radial="8"
+        material="color: #5a3818; roughness: 0.9"></a-cylinder>
+      <a-sphere id="tree-canopy-r1" position="35 5.5 15" radius="2.5"
+        material="color: #3a6830; roughness: 0.9"></a-sphere>
+      <a-cylinder id="tree-trunk-r2" position="35 2 5" radius="0.3" height="4" segments-radial="8"
+        material="color: #5a3818; roughness: 0.9"></a-cylinder>
+      <a-sphere id="tree-canopy-r2" position="35 5.5 5" radius="2.5"
+        material="color: #3a7030; roughness: 0.9"></a-sphere>
+      <!-- ===================== INFORMATION DESK ===================== -->
+      <a-box id="info-desk" position="0 1.5 10" width="4" height="1.2" depth="1.5"
+        material="color: #8a7050; roughness: 0.6"></a-box>
+      <a-box id="info-desk-top" position="0 2.11 10" width="4.1" height="0.1" depth="1.6"
+        material="color: #a08060; roughness: 0.4; metalness: 0.1"></a-box>
+      <a-text id="info-sign" value="INFORMATION" position="0 2.5 10.81"
+        align="center" color="#f0e8d0" width="4" font="dejavu"></a-text>
+      <script>
+        AFRAME.registerComponent('art-right-1-click', {
+          init: function () {
+            var el = this.el;
+            var popup = document.getElementById('art-right-1-popup');
+            el.addEventListener('click', function () {
+              var isVisible = popup.getAttribute('visible');
+              popup.setAttribute('visible', !isVisible);
+            });
+          }
+        });
+      </script>
+      <a-light type="ambient" color="#ffffff" intensity="0.6" position="0 1 -3"></a-light>
+    </a-scene>
+  </body>
+</html>
